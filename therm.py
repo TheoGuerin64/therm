@@ -59,13 +59,13 @@ def main() -> None:
     try:
         run()
     except Exit as e:
-        questionary.print(f"{e}")
+        print(f"{e}")
         raise SystemExit(0)
     except Error as e:
-        questionary.print(f"error: {e}")
+        print(f"error: {e}", file=sys.stderr)
         raise SystemExit(1)
     except Exception as e:
-        questionary.print(f"unexpected error: {e}")
+        print(f"unexpected error: {e}", file=sys.stderr)
         raise SystemExit(1)
 
 
