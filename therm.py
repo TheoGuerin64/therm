@@ -1,16 +1,24 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "plumbum",
 #     "questionary",
 # ]
 # ///
 
-
 import platform
+import subprocess
+import sys
 from enum import StrEnum, auto
 
 import questionary
+
+
+def execute(command: str) -> subprocess.CompletedProcess:
+    return subprocess.run(command, shell=True, capture_output=True, check=True)
+
+
+def execute_pipeline(*commands: str) -> subprocess.CompletedProcess:
+    return execute(" | ".join(commands))
 
 
 class MessageException(Exception):
@@ -63,9 +71,6 @@ def main() -> None:
         raise SystemExit(0)
     except Error as e:
         print(f"error: {e}", file=sys.stderr)
-        raise SystemExit(1)
-    except Exception as e:
-        print(f"unexpected error: {e}", file=sys.stderr)
         raise SystemExit(1)
 
 
