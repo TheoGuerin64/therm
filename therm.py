@@ -20,7 +20,14 @@ from questionary import checkbox, confirm
 from rich.status import Status
 
 RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/TheoGuerin64/therm/main"
-GHOSTTY_CONFIG = Path("~/.config/ghostty/config").expanduser()
+
+GHOSTTY_USER_CONFIG_PATH = Path.home() / ".config/ghostty/config"
+GHOSTTY_DEFAULT_CONFIG_URL = f"{RAW_REPOSITORY_URL}/ghostty/config"
+GHOSTTY_APT_REPOSITORY_URL = (
+    "https://download.opensuse.org/repositories/home:/clayrisser:/bookworm/Debian_12"
+)
+GHOSTTY_APT_SOURCE_PATH = "/etc/apt/sources.list.d/home:clayrisser:bookworm.list"
+GHOSTTY_APT_GPG_KEY_PATH = "/etc/apt/trusted.gpg.d/home_clayrisser_bookworm.gpg"
 
 
 class Exit(Exception):
@@ -92,18 +99,14 @@ class Debian:
 
     @staticmethod
     def install_ghostty() -> None:
-        REPOSITORY_URL = "https://download.opensuse.org/repositories/home:/clayrisser:/bookworm/Debian_12"
-        APT_SOURCE_LIST_PATH = "/etc/apt/sources.list.d/home:clayrisser:bookworm.list"
-        TRUSTED_GPG_KEY_PATH = "/etc/apt/trusted.gpg.d/home_clayrisser_bookworm.gpg"
-
         execute_pipeline(
-            f"echo 'deb {REPOSITORY_URL}/ /'",
-            f"sudo tee {APT_SOURCE_LIST_PATH}",
+            f"echo 'deb {GHOSTTY_APT_REPOSITORY_URL}/ /'",
+            f"sudo tee {GHOSTTY_APT_SOURCE_PATH}",
         )
         execute_pipeline(
-            f"curl -fsSL {REPOSITORY_URL}/Release.key",
+            f"curl -fsSL {GHOSTTY_APT_REPOSITORY_URL}/Release.key",
             "gpg --dearmor",
-            f"sudo tee {TRUSTED_GPG_KEY_PATH}",
+            f"sudo tee {GHOSTTY_APT_GPG_KEY_PATH}",
         )
         execute("sudo apt update")
         execute("sudo apt install -y ghostty")
@@ -125,7 +128,7 @@ class GhosttySettings(Settings):
 
 def setup_ghostty_settings() -> GhosttySettings:
     settings = GhosttySettings(overwrite=False)
-    if not GHOSTTY_CONFIG.exists():
+    if not GHOSTTY_USER_CONFIG_PATH.exists():
         return settings
 
     print("Ghostty configuration file already exists")
@@ -136,17 +139,15 @@ def setup_ghostty_settings() -> GhosttySettings:
 
 
 def configure_ghostty(settings: GhosttySettings) -> None:
-    CONFIG_URL = f"{RAW_REPOSITORY_URL}/ghostty/config"
+    if not GHOSTTY_USER_CONFIG_PATH.parent.exists():
+        execute(f"mkdir -p '{GHOSTTY_USER_CONFIG_PATH.parent}'")
 
-    if not GHOSTTY_CONFIG.parent.exists():
-        execute(f"mkdir -p '{GHOSTTY_CONFIG.parent}'")
-
-    if GHOSTTY_CONFIG.exists():
+    if GHOSTTY_USER_CONFIG_PATH.exists():
         if not settings.overwrite:
             return
-        execute(f"rm -f {GHOSTTY_CONFIG}")
+        execute(f"rm -f {GHOSTTY_USER_CONFIG_PATH}")
 
-    execute(f"curl -fsSL {CONFIG_URL} -o {GHOSTTY_CONFIG}")
+    execute(f"curl -fsSL {GHOSTTY_DEFAULT_CONFIG_URL} -o {GHOSTTY_USER_CONFIG_PATH}")
 
 
 @dataclass
