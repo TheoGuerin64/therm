@@ -30,6 +30,10 @@ GHOSTTY_APT_SOURCE_PATH = "/etc/apt/sources.list.d/home:clayrisser:bookworm.list
 GHOSTTY_APT_GPG_KEY_PATH = "/etc/apt/trusted.gpg.d/home_clayrisser_bookworm.gpg"
 
 
+def list_remove_duplicates(lst: list[str]) -> list[str]:
+    return list(set(lst))
+
+
 class Exit(Exception):
     pass
 
@@ -223,6 +227,7 @@ def install_components(distribution: Distribution) -> None:
         for component in selected_components
         for package in component.required_packages
     ]
+    required_packages = list_remove_duplicates(required_packages)
     install_requirements(distribution, required_packages)
 
     for component in selected_components:
