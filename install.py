@@ -113,11 +113,41 @@ class Debian:
             f"tee {GHOSTTY_APT_GPG_KEY_PATH}",
         )
         execute("apt update")
-        execute("apt install -y ghostty")
+        Debian.install_packages("ghostty")
 
 
-DISTRIBUTION_MAPPING = {
+class Fedora:
+    @staticmethod
+    def system_upgrade() -> None:
+        execute("dnf upgrade --refresh -y")
+
+    @staticmethod
+    def is_package_missing(package: str) -> bool:
+        try:
+            execute(f"rpm -q {package}")
+        except subprocess.CalledProcessError as e:
+            if e.returncode == 1:
+                return True
+            raise
+        return False
+
+    @staticmethod
+    def install_packages(*packages: str) -> None:
+        execute(f"dnf install -y {' '.join(packages)}")
+
+    @staticmethod
+    def ghostty_installed() -> bool:
+        return Fedora.is_package_missing("ghostty") is False
+
+    @staticmethod
+    def install_ghostty() -> None:
+        execute("dnf copr enable -y pgdev/ghostty")
+        Fedora.install_packages("ghostty")
+
+
+DISTRIBUTION_MAPPING: dict[str, Distribution] = {
     "debian": Debian,
+    "fedora": Fedora,
 }
 
 
@@ -157,7 +187,7 @@ def configure_ghostty(settings: GhosttySettings) -> None:
 @dataclass
 class Component[T: Settings = Settings]:
     name: str
-    required_packages: tuple[str, ...]
+    required_packages: dict[Distribution, tuple[str, ...]]
     installed: Callable[[Distribution], bool]
     install: Callable[[Distribution], None]
     setup_settings: Callable[[], T]
@@ -168,7 +198,10 @@ class Component[T: Settings = Settings]:
 COMPONENTS = (
     Component(
         name="Ghostty",
-        required_packages=("curl", "gpg"),
+        required_packages={
+            Debian: ("curl", "gpg"),
+            Fedora: ("curl",),
+        },
         installed=lambda d: d.ghostty_installed(),
         install=lambda d: d.install_ghostty(),
         setup_settings=setup_ghostty_settings,
@@ -225,7 +258,7 @@ def install_components(distribution: Distribution) -> None:
     required_packages = [
         package
         for component in selected_components
-        for package in component.required_packages
+        for package in component.required_packages.get(distribution, ())
     ]
     required_packages = list_remove_duplicates(required_packages)
     install_requirements(distribution, required_packages)
