@@ -1,4 +1,3 @@
 #!/usr/bin/env sh
 mkdir -p public
-cp therm.py public/install.py
-cp -r ghostty public
+cp -r install.py ghostty public
