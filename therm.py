@@ -77,7 +77,7 @@ class Distribution(Protocol):
 class Debian:
     @staticmethod
     def system_upgrade() -> None:
-        execute("sudo apt update && sudo apt upgrade -y")
+        execute("apt update && apt upgrade -y")
 
     @staticmethod
     def is_package_missing(package: str) -> bool:
@@ -91,7 +91,7 @@ class Debian:
 
     @staticmethod
     def install_packages(*packages: str) -> None:
-        execute(f"sudo apt install -y {' '.join(packages)}")
+        execute(f"apt install -y {' '.join(packages)}")
 
     @staticmethod
     def ghostty_installed() -> bool:
@@ -101,15 +101,15 @@ class Debian:
     def install_ghostty() -> None:
         execute_pipeline(
             f"echo 'deb {GHOSTTY_APT_REPOSITORY_URL}/ /'",
-            f"sudo tee {GHOSTTY_APT_SOURCE_PATH}",
+            f"tee {GHOSTTY_APT_SOURCE_PATH}",
         )
         execute_pipeline(
             f"curl -fsSL {GHOSTTY_APT_REPOSITORY_URL}/Release.key",
             "gpg --dearmor",
-            f"sudo tee {GHOSTTY_APT_GPG_KEY_PATH}",
+            f"tee {GHOSTTY_APT_GPG_KEY_PATH}",
         )
-        execute("sudo apt update")
-        execute("sudo apt install -y ghostty")
+        execute("apt update")
+        execute("apt install -y ghostty")
 
 
 DISTRIBUTION_MAPPING = {
