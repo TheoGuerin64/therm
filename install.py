@@ -19,10 +19,10 @@ from typing import Callable, Iterable, Protocol
 from questionary import checkbox, confirm
 from rich.status import Status
 
-RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/TheoGuerin64/therm/main"
+REMOTE_ASSETS_BASE_URL = "https://theoguerin64.github.io/therm"
 
 GHOSTTY_USER_CONFIG_PATH = Path.home() / ".config/ghostty/config"
-GHOSTTY_DEFAULT_CONFIG_URL = f"{RAW_REPOSITORY_URL}/ghostty/config"
+GHOSTTY_DEFAULT_CONFIG_URL = f"{REMOTE_ASSETS_BASE_URL}/ghostty/config"
 GHOSTTY_APT_REPOSITORY_URL = (
     "https://download.opensuse.org/repositories/home:/clayrisser:/bookworm/Debian_12"
 )
