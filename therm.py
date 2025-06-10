@@ -128,7 +128,7 @@ def setup_ghostty_settings() -> GhosttySettings:
     if not GHOSTTY_CONFIG.exists():
         return settings
 
-    print("Ghostty configuration file already exists.")
+    print("Ghostty configuration file already exists")
     if confirm("Do you want to overwrite it?").ask():
         settings.overwrite = True
 
@@ -184,8 +184,8 @@ def identify_distribution() -> Distribution:
     distribution = DISTRIBUTION_MAPPING.get(raw_distribution)
     if not distribution:
         raise Exit(
-            f"Unsupported Linux distribution: {raw_distribution}.\n"
-            f"This script currently supports: {', '.join(DISTRIBUTION_MAPPING.keys())}."
+            f"Unsupported Linux distribution: {raw_distribution}\n"
+            f"This script currently supports: {', '.join(DISTRIBUTION_MAPPING.keys())}"
         )
 
     return distribution
@@ -200,17 +200,13 @@ def install_requirements(
 
     print(f"Required packages missing: {', '.join(missing_packages)}")
     if not confirm("Install these packages to continue?").ask():
-        raise Exit("Installation cancelled by user.")
+        raise Exit("Installation cancelled by user")
 
     with Status("Installing packages..."):
         distribution.install_packages(*missing_packages)
 
 
 def install_components(distribution: Distribution) -> None:
-    non_installed_components = [c for c in COMPONENTS if not c.installed(distribution)]
-    if not non_installed_components:
-        return
-
     selected_components: list[Component] = checkbox(
         "This script will install the following components:",
         choices=[{"name": c.name, "value": c} for c in COMPONENTS],
