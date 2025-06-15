@@ -10,3 +10,10 @@
     name: ghostty
     state: present
   when: ansible_os_family == "RedHat"
+
+- name: Add Ghostty configuration file
+  ansible.builtin.copy:
+    src: config
+    dest: ~/.config/ghostty/
+    mode: '0644'
+  when: ansible_os_family == "RedHat"
