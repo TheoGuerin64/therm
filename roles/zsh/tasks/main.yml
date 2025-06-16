@@ -43,13 +43,13 @@
 
 - name: Install Zsh plugins
   block:
-    - name: Ensure zsh-autosuggestions plugin is installed
+    - name: Clone zsh-autosuggestions plugin repository
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-autosuggestions.git
         dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
         version: master
 
-    - name: Ensure zsh-syntax-highlighting plugin is installed
+    - name: Clone zsh-syntax-highlighting plugin repository
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
         dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
