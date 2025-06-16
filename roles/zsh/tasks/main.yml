@@ -41,6 +41,20 @@
         dest: ~/
         mode: '0644'
 
+- name: Install Zsh plugins
+  block:
+    - name: Ensure zsh-autosuggestions plugin is installed
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+        version: master
+
+    - name: Ensure zsh-syntax-highlighting plugin is installed
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+        version: master
+
 - name: Generate Zsh configuration
   block:
     - name: Add dnf plugin (RedHat)
