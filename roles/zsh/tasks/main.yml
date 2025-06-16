@@ -1,0 +1,63 @@
+---
+- name: Install zsh
+  ansible.builtin.package:
+    name: zsh
+    state: present
+  become: true
+
+- name: Install Oh My Zsh
+  block:
+    - name: Check for existing Oh My Zsh directory
+      ansible.builtin.stat:
+        path: "~/.oh-my-zsh"
+      register: oh_my_zsh_directory
+
+    - name: Download Oh My Zsh installer script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/
+        mode: '0755'
+      when: not oh_my_zsh_directory.stat.exists
+
+    - name: Run Oh My Zsh installer
+      ansible.builtin.command:
+        cmd: /tmp/install.sh --unattended
+      register: oh_my_zsh_install
+      changed_when: oh_my_zsh_install.rc == 0
+      when: not oh_my_zsh_directory.stat.exists
+
+- name: Install Powerlevel10k theme
+  block:
+    - name: Clone Powerlevel10k repository
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+        depth: 1
+        version: master
+
+    - name: Deploy Powerlevel10k configuration file
+      ansible.builtin.copy:
+        src: .p10k.zsh
+        dest: ~/
+        mode: '0644'
+
+- name: Generate Zsh configuration
+  block:
+    - name: Add dnf plugin (RedHat)
+      ansible.builtin.set_fact:
+        zsh_plugins: "{{ zsh_plugins + ['dnf'] }}"
+      when: ansible_os_family == "RedHat"
+
+    - name: Create ~/.zshrc from template
+      ansible.builtin.template:
+        src: .zshrc.j2
+        dest: "~/.zshrc"
+        mode: '0644'
+      vars:
+        plugins: "{{ zsh_plugins }}"
+
+- name: Set default shell to /bin/zsh for current user
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true

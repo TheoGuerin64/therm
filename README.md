@@ -34,7 +34,7 @@
 3. **Install the general requirements:**
 
     ```bash
-    uv sync --no-dev
+    uv sync --no-dev --frozen --no-cache
     ```
 
 4. **Install distribution-specific requirements:**
@@ -42,11 +42,20 @@
     **For Fedora:**
 
     ```bash
-    sudo dnf install -u python3-dnf python3-libdnf5
+    sudo dnf install -y python3-dnf python3-libdnf5
     ```
 
 5. **Run the playbook:**
 
     ```bash
-    sudo ansible-playbook -i inventory.ini main.yml
+    ansible-playbook -i inventory.ini main.yml -K
     ```
+
+6. **Remove the cloned repository:**
+
+    ```bash
+    cd ..
+    rm -rf therm
+    ```
+
+7. **Log out and log back in or reboot your system:**

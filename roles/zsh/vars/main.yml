@@ -1,0 +1,5 @@
+---
+zsh_plugins:
+  - git
+  - uv
+  - python

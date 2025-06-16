@@ -1,18 +1,19 @@
 ---
-- name: Add Ghostty repository (RedHat)
+- name: Enable Ghostty COPR repository (RedHat)
   community.general.copr:
     name: pgdev/ghostty
     state: enabled
+  become: true
   when: ansible_os_family == "RedHat"
 
-- name: Install Ghostty (RedHat)
-  ansible.builtin.dnf:
+- name: Install Ghostty package
+  ansible.builtin.package:
     name: ghostty
     state: present
-  when: ansible_os_family == "RedHat"
+  become: true
 
-- name: Add Ghostty configuration file
+- name: Deploy Ghostty configuration file
   ansible.builtin.copy:
     src: config
-    dest: ~/.config/ghostty/
+    dest: "~/.config/ghostty/"
     mode: '0644'

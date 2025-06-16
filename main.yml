@@ -1,8 +1,17 @@
 ---
-- name: Install and configure roles
+- name: Install dependencies and apply roles
   hosts: localhost
   connection: local
-  become: true
+
+  pre_tasks:
+    - name: Install required packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      become: true
+      loop:
+        - git
 
   roles:
     - ghostty
+    - zsh
