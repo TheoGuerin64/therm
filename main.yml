@@ -13,6 +13,7 @@
         - git
 
   roles:
-    - ghostty
-    - zsh
-    - fzf
+    - vscode
+    # - ghostty
+    # - zsh
+    # - fzf

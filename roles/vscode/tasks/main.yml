@@ -1,0 +1,24 @@
+- name: Import GPG key for Visual Studio Code (RedHat)
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://packages.microsoft.com/keys/microsoft.asc
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Add Visual Studio Code repository (RedHat)
+  ansible.builtin.yum_repository:
+    name: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgcheck: true
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    enabled: true
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Install Visual Studio Code package (RedHat)
+  ansible.builtin.dnf:
+    name: code
+    state: present
+  become: true
+  when: ansible_os_family == "RedHat"

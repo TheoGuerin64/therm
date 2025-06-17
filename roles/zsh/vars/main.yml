@@ -6,3 +6,4 @@ zsh_plugins:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
   - fzf
+  - vscode
