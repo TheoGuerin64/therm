@@ -1,0 +1,18 @@
+- name: Install required system packages
+  ansible.builtin.package:
+    name:
+      - git
+      - neovim
+      - gcc
+      - make
+      - ripgrep
+      - fd-find
+      - unzip
+    state: present
+  become: true
+
+- name: Clone Neovim configuration repository
+  ansible.builtin.git:
+    repo: https://github.com/TheoGuerin64/nvim.git
+    dest: "~/.config/nvim"
+    version: master

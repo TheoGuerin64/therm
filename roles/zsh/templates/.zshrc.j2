@@ -15,3 +15,10 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  export EDITOR='code --wait'
+else
+	export EDITOR='nvim'
+fi
+alias edit='$EDITOR'
