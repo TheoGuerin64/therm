@@ -8,7 +8,6 @@ RUN dnf install -y \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 COPY --from=uv-binaries /uv /uvx /bin/
-ENV PATH="/app/.venv/bin:$PATH"
 RUN groupadd -g 1000 developer \
     && useradd -m -u 1000 -g developer -s /bin/bash developer \
     && echo "developer ALL=(ALL) NOPASSWD:ALL" \
@@ -18,4 +17,4 @@ USER developer
 WORKDIR /app
 COPY --chown=developer:developer pyproject.toml uv.lock ./
 RUN uv sync --no-dev --frozen --no-cache --compile-bytecode
-CMD ["sh", "-c", "ansible-playbook -i inventory.ini main.yml -K && exec zsh"]
+CMD ["sh", "-c", "uv run ansible-playbook -i inventory.ini main.yml -K && $SHELL"]
