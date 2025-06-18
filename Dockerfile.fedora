@@ -17,4 +17,4 @@ USER developer
 WORKDIR /app
 COPY --chown=developer:developer pyproject.toml uv.lock ./
 RUN uv sync --no-dev --frozen --no-cache --compile-bytecode
-CMD ["sh", "-c", "uv run ansible-playbook -i inventory.ini main.yml -K && $SHELL"]
+CMD ["sh", "-c", "uv run ansible-playbook -i inventory.ini main.yml -K && exec $SHELL"]
