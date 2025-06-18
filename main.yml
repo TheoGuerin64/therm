@@ -11,7 +11,9 @@
     - fzf
     - ghostty
     - git
+    - golang
     - neovim
     - uv
     - vscode
+    - zig
     - zsh

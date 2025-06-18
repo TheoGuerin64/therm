@@ -1,0 +1,6 @@
+---
+- name: Install Zig package
+  ansible.builtin.package:
+    name: zig
+    state: present
+  become: true
