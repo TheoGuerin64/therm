@@ -8,15 +8,6 @@
       - git
       - uv
 
-  pre_tasks:
-    - name: Install required packages
-      ansible.builtin.package:
-        name: "{{ item }}"
-        state: present
-      become: true
-      loop:
-        - git
-
   roles:
     - fzf
     - ghostty
