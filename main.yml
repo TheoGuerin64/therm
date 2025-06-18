@@ -7,7 +7,6 @@
     oh_my_zsh_plugins:
       - git
       - uv
-      - python
 
   pre_tasks:
     - name: Install required packages

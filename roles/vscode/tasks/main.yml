@@ -22,7 +22,3 @@
     state: present
   become: true
   when: ansible_os_family == "RedHat"
-
-- name: Add vscode plugin to Oh My Zsh
-  ansible.builtin.set_fact:
-    oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['vscode'] }}"
