@@ -2,7 +2,7 @@
   ansible.builtin.command:
     cmd: uv tool install bpython
   register: tmp
-  changed_when: tmp.stdout != "`bpython` is already installed:"
+  changed_when: '"is already installed" not in tmp.stderr'
 
 - name: Add uv plugin to Oh My Zsh
   ansible.builtin.set_fact:
