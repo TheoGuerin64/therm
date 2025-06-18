@@ -4,6 +4,7 @@
     name:
       - git
       - curl
+      - xsel
     state: present
   become: true
 
