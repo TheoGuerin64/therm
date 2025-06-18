@@ -12,11 +12,6 @@
 
 - [uv](https://docs.astral.sh/uv/getting-started/installation) (python package manager)
 
-### Fedora
-
-- `python3-dnf`
-- `python3-libdnf5`
-
 ## Usage
 
 1. **Clone the repository:**
