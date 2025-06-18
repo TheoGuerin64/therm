@@ -8,13 +8,13 @@
       - sudo
 
   roles:
-    - rust
     - fzf
     - ghostty
     - git
     - golang
     - neovim
     - node
+    - rust
     - uv
     - vscode
     - zig
