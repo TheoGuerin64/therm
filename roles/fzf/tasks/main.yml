@@ -1,6 +1,10 @@
 ---
-- name: Install fzf
+- name: Install fzf package
   ansible.builtin.package:
     name: fzf
     state: present
   become: true
+
+- name: Add fzf plugin to Oh My Zsh
+  ansible.builtin.set_fact:
+    oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['fzf'] }}"

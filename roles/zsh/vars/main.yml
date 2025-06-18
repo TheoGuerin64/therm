@@ -5,5 +5,4 @@ zsh_plugins:
   - python
   - zsh-autosuggestions
   - zsh-syntax-highlighting
-  - fzf
   - vscode
