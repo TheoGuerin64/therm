@@ -1,8 +1,0 @@
----
-zsh_plugins:
-  - git
-  - uv
-  - python
-  - zsh-autosuggestions
-  - zsh-syntax-highlighting
-  - vscode
