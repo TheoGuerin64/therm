@@ -28,8 +28,8 @@
     - name: Run Oh My Zsh installer
       ansible.builtin.command:
         cmd: /tmp/install.sh --unattended
-      register: oh_my_zsh_install
-      changed_when: oh_my_zsh_install.rc == 0
+      register: tmp
+      changed_when: tmp.rc == 0
       when: not oh_my_zsh_directory.stat.exists
 
 - name: Install Powerlevel10k theme
