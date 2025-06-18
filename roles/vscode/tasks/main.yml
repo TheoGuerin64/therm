@@ -16,9 +16,8 @@
   become: true
   when: ansible_os_family == "RedHat"
 
-- name: Install Visual Studio Code package (RedHat)
-  ansible.builtin.dnf:
+- name: Install Visual Studio Code package
+  ansible.builtin.package:
     name: code
     state: present
   become: true
-  when: ansible_os_family == "RedHat"
