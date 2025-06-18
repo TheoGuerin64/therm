@@ -25,14 +25,14 @@
     - name: Clone Powerlevel10k repository
       ansible.builtin.git:
         repo: https://github.com/romkatv/powerlevel10k.git
-        dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
         depth: 1
         version: master
 
     - name: Deploy Powerlevel10k configuration file
       ansible.builtin.copy:
         src: .p10k.zsh
-        dest: ~/
+        dest: "{{ ansible_env.HOME }}/"
         mode: '0644'
 
 - name: Install Zsh plugins
@@ -40,14 +40,14 @@
     - name: Clone zsh-autosuggestions plugin repository
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-autosuggestions.git
-        dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
         version: master
 
 
     - name: Clone zsh-syntax-highlighting plugin repository
       ansible.builtin.git:
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-        dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
         version: master
 
     - name: Add cloned plugins to Oh My Zsh
@@ -62,10 +62,10 @@
         oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['dnf'] }}"
       when: ansible_os_family == "RedHat"
 
-    - name: Create ~/.zshrc from template
+    - name: Create .zshrc from template
       ansible.builtin.template:
         src: .zshrc.j2
-        dest: ~/.zshrc
+        dest: "{{ ansible_env.HOME }}/.zshrc"
         mode: '0644'
       vars:
         plugins: "{{ oh_my_zsh_plugins }}"

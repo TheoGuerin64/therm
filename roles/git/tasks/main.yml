@@ -18,12 +18,12 @@
         name: user.email
         value: 25770915-TheoGuerin64@users.noreply.gitlab.com
         scope: file
-        file: ~/.gitconfig-gitlab
+        file: "{{ ansible_env.HOME }}/.gitconfig-gitlab"
 
     - name: Add GitLab includeIf rule for 42-cursus directory
       community.general.git_config:
-        name: includeIf.gitdir:~/Code/42-cursus/.path
-        value: ~/.gitconfig-gitlab
+        name: "includeIf.gitdir:{{ ansible_env.HOME }}/Code/42-cursus/.path"
+        value: "{{ ansible_env.HOME }}/.gitconfig-gitlab"
         scope: global
 
     - name: Configure Git user name
