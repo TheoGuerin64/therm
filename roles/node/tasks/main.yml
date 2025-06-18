@@ -30,4 +30,4 @@
 
 - name: Add NVM and Bun plugins to Oh My Zsh
   ansible.builtin.set_fact:
-    oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['nvm', 'bun'] }}"
+    oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['node', 'nvm', 'bun'] }}"

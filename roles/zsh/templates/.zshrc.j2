@@ -23,3 +23,28 @@ else
 fi
 alias edit='$EDITOR'
 alias toclip='xsel --clipboard'
+
+export PATH="$HOME/.local/bin:$PATH"
+
+{% if 'golang' in plugins %}
+# golang
+export PATH="$HOME/go/bin:$PATH"
+{% endif %}
+
+{% if 'rust' in plugins %}
+# rust
+. "$HOME/.cargo/env"
+{% endif %}
+
+{% if 'node' in plugins %}
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+{% endif %}
