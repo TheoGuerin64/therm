@@ -6,11 +6,11 @@
   vars:
     oh_my_zsh_plugins:
       - git
-      - uv
 
   roles:
     - fzf
     - ghostty
     - neovim
+    - uv
     - vscode
     - zsh
