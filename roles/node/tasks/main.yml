@@ -1,0 +1,33 @@
+---
+- name: Install required system packages
+  ansible.builtin.package:
+    name:
+      - curl
+      - unzip
+    state: present
+  become: true
+
+- name: Install NVM
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/"
+
+- name: Install PNPM
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -fsSL https://get.pnpm.io/install.sh | sh -
+  args:
+    creates: "{{ ansible_env.HOME }}/.local/share/pnpm/"
+
+- name: Install Bun
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -fsSL https://bun.sh/install | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.bun/"
+
+- name: Add NVM and Bun plugins to Oh My Zsh
+  ansible.builtin.set_fact:
+    oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['nvm', 'bun'] }}"
