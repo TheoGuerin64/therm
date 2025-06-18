@@ -1,0 +1,49 @@
+---
+- name: Install Git package
+  ansible.builtin.package:
+    name: git
+    state: present
+  become: true
+
+- name: Configure Git settings
+  block:
+    - name: Configure default Git user email
+      community.general.git_config:
+        name: user.email
+        value: "github_user_email"
+        scope: global
+
+    - name: Configure GitLab user email
+      community.general.git_config:
+        name: user.email
+        value: "gitlab_user_email"
+        scope: file
+        file: "~/.gitconfig-gitlab"
+
+    - name: Add GitLab includeIf rule for 42-cursus directory
+      community.general.git_config:
+        name: includeIf.gitdir:~/Code/42-cursus/.path
+        value: "~/.gitconfig-gitlab"
+        scope: global
+
+    - name: Configure Git user name
+      community.general.git_config:
+        name: user.name
+        value: "git_user_name"
+        scope: global
+
+    - name: Configure default branch to main
+      community.general.git_config:
+        name: init.defaultBranch
+        value: "main"
+        scope: global
+
+    - name: Enable push.autoSetupRemote
+      community.general.git_config:
+        name: push.autoSetupRemote
+        value: "true"
+        scope: global
+
+- name: Add Git plugin to Oh My Zsh
+  ansible.builtin.set_fact:
+    oh_my_zsh_plugins: "{{ oh_my_zsh_plugins + ['git'] }}"

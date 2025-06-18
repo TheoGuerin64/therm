@@ -5,11 +5,12 @@
 
   vars:
     oh_my_zsh_plugins:
-      - git
+      - sudo
 
   roles:
     - fzf
     - ghostty
+    - git
     - neovim
     - uv
     - vscode
