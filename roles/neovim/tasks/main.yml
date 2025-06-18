@@ -14,5 +14,5 @@
 - name: Clone Neovim configuration repository
   ansible.builtin.git:
     repo: https://github.com/TheoGuerin64/nvim.git
-    dest: "~/.config/nvim"
+    dest: ~/.config/nvim
     version: master

@@ -10,38 +10,38 @@
     - name: Configure default Git user email
       community.general.git_config:
         name: user.email
-        value: "57496441+TheoGuerin64@users.noreply.github.com"
+        value: 57496441+TheoGuerin64@users.noreply.github.com
         scope: global
 
     - name: Configure GitLab user email
       community.general.git_config:
         name: user.email
-        value: "25770915-TheoGuerin64@users.noreply.gitlab.com"
+        value: 25770915-TheoGuerin64@users.noreply.gitlab.com
         scope: file
-        file: "~/.gitconfig-gitlab"
+        file: ~/.gitconfig-gitlab
 
     - name: Add GitLab includeIf rule for 42-cursus directory
       community.general.git_config:
         name: includeIf.gitdir:~/Code/42-cursus/.path
-        value: "~/.gitconfig-gitlab"
+        value: ~/.gitconfig-gitlab
         scope: global
 
     - name: Configure Git user name
       community.general.git_config:
         name: user.name
-        value: "TheoGuerin64"
+        value: TheoGuerin64
         scope: global
 
     - name: Configure default branch to main
       community.general.git_config:
         name: init.defaultBranch
-        value: "main"
+        value: main
         scope: global
 
     - name: Enable push.autoSetupRemote
       community.general.git_config:
         name: push.autoSetupRemote
-        value: "true"
+        value: true
         scope: global
 
 - name: Add Git plugin to Oh My Zsh

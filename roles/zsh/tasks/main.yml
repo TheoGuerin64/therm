@@ -15,7 +15,7 @@
   block:
     - name: Check for existing Oh My Zsh directory
       ansible.builtin.stat:
-        path: "~/.oh-my-zsh"
+        path: ~/.oh-my-zsh
       register: oh_my_zsh_directory
 
     - name: Download Oh My Zsh installer script
@@ -77,7 +77,7 @@
     - name: Create ~/.zshrc from template
       ansible.builtin.template:
         src: .zshrc.j2
-        dest: "~/.zshrc"
+        dest: ~/.zshrc
         mode: '0644'
       vars:
         plugins: "{{ oh_my_zsh_plugins }}"

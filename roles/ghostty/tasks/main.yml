@@ -15,5 +15,5 @@
 - name: Deploy Ghostty configuration file
   ansible.builtin.copy:
     src: config
-    dest: "~/.config/ghostty/"
+    dest: ~/.config/ghostty/
     mode: '0644'
