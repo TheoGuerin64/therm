@@ -1,24 +1,10 @@
 ---
 - name: Install Rustup
-  block:
-    - name: Check if Rustup is already installed
-      ansible.builtin.stat:
-        path: "~/.rustup"
-      register: rustup_directory
-
-    - name: Download Rustup installer script
-      ansible.builtin.get_url:
-        url: https://sh.rustup.rs
-        dest: /tmp/rustup-init.sh
-        mode: '0755'
-      when: not rustup_directory.stat.exists
-
-    - name: Run Rustup installer
-      ansible.builtin.command:
-        cmd: /tmp/rustup-init.sh -y
-      register: tmp
-      changed_when: tmp.rc == 0
-      when: not rustup_directory.stat.exists
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  args:
+    creates: "{{ ansible_env.HOME }}/.rustup/"
 
 - name: Add rust plugin to Oh My Zsh
   ansible.builtin.set_fact:

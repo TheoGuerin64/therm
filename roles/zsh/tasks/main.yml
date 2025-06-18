@@ -1,7 +1,9 @@
 ---
 - name: Install required system packages
   ansible.builtin.package:
-    name: git
+    name:
+      - git
+      - curl
     state: present
   become: true
 
@@ -12,25 +14,11 @@
   become: true
 
 - name: Install Oh My Zsh
-  block:
-    - name: Check for existing Oh My Zsh directory
-      ansible.builtin.stat:
-        path: ~/.oh-my-zsh
-      register: oh_my_zsh_directory
-
-    - name: Download Oh My Zsh installer script
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-        dest: /tmp/
-        mode: '0755'
-      when: not oh_my_zsh_directory.stat.exists
-
-    - name: Run Oh My Zsh installer
-      ansible.builtin.command:
-        cmd: /tmp/install.sh --unattended
-      register: tmp
-      changed_when: tmp.rc == 0
-      when: not oh_my_zsh_directory.stat.exists
+  ansible.builtin.shell: |
+    set -o pipefail
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  args:
+    creates: "{{ ansible_env.HOME }}/.oh-my-zsh/"
 
 - name: Install Powerlevel10k theme
   block:
